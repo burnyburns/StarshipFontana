@@ -93,9 +93,10 @@ void SFAsset::OnRender() {
   SDL_RenderCopy(sf_window->getRenderer(), sprite, NULL, &rect);
 }
 
+
 void SFAsset::GoWest() {
   Vector2 c = *(bbox->centre) + Vector2(-5.0f, 0.0f);
-  if(!(c.getX() < 0)) {
+  if(!(c.getX() -32.0f<0)) {
     bbox->centre.reset();
     bbox->centre = make_shared<Vector2>(c);
   }
@@ -106,7 +107,7 @@ void SFAsset::GoEast() {
   SDL_GetRendererOutputSize(sf_window->getRenderer(), &w, &h);
 
   Vector2 c = *(bbox->centre) + Vector2(5.0f, 0.0f);
-  if(!(c.getX() > w)) {
+  if(!(c.getX() +32.0f>w  )) {
     bbox->centre.reset();
     bbox->centre = make_shared<Vector2>(c);
   }
@@ -114,14 +115,32 @@ void SFAsset::GoEast() {
 
 void SFAsset::GoSouth() {
   Vector2 c = *(bbox->centre) + Vector2(0.0f, -3.0f);
+  if(!(c.getY()<32.0f)){
   bbox->centre.reset();
   bbox->centre = make_shared<Vector2>(c);
 }
+  if(SFASSET_COIN == type){
+  Vector2 c =*(bbox->centre) + Vector2(0.0f,-2.0f);
+  if(!(c.getY() < 0.0f)){
+	bbox->centre.reset();
+	bbox->centre = make_shared<Vector2>(c);
+			}
+	else{
+	auto pos = Point2(rand()%600+32, rand()%400+600);
+	this->SetPosition(pos);
+	}
+	}
+}
 
 void SFAsset::GoNorth() {
-  Vector2 c = *(bbox->centre) + Vector2(0.0f, 1.0f);
+  
+  Vector2 c = *(bbox->centre) + Vector2(0.0f, 4.0f);
+  int w, h;
+  SDL_GetRendererOutputSize(sf_window->getRenderer(),&w, &h);
+  if(!(c.getY()+4.0f>h)){
   bbox->centre.reset();
   bbox->centre = make_shared<Vector2>(c);
+}
 }
 
 bool SFAsset::CollidesWith(shared_ptr<SFAsset> other) {
@@ -141,7 +160,16 @@ bool SFAsset::IsAlive() {
 }
 
 void SFAsset::HandleCollision() {
-  if(SFASSET_PROJECTILE == type || SFASSET_ALIEN == type) {
+  if(SFASSET_PROJECTILE == type) {
     SetNotAlive();
   }
+if(SFASSET_COIN==type ){
+ int canvas_w, canvas_h;
+ SDL_GetRendererOutputSize(sf_window->getRenderer(),&canvas_w,&canvas_h);
+ auto pos= Point2 (rand()%600+32, rand()%400+600);
+ this->SetPosition(pos);
 }
+}
+
+
+ 
