@@ -65,6 +65,12 @@ Vector2 GameSpaceToScreenSpace(SDL_Renderer* renderer, Vector2 &r) {
                   );
 }
 
+int SFAsset::HP(){
+	return objHP;
+}
+void SFAsset::SetHP(int amount){
+	this->objHP=amount;}
+
 void SFAsset::SetPosition(Point2 & point) {
   Vector2 v(point.getX(), point.getY());
   bbox->SetCentre(v);
@@ -118,6 +124,18 @@ void SFAsset::GoSouth() {
   if(!(c.getY()<32.0f)){
   bbox->centre.reset();
   bbox->centre = make_shared<Vector2>(c);
+  
+  if(SFASSET_ALIEN == type){
+  Vector2 c =*(bbox->centre) + Vector2(0.0f,-2.0f);
+  if(!(c.getY() < 0.0f)){
+	bbox->centre.reset();
+	bbox->centre = make_shared<Vector2>(c);
+			}
+	else{
+	auto pos = Point2(rand()%600+32, rand()%400+600);
+	this->SetPosition(pos);
+	}
+	}
 }
   if(SFASSET_COIN == type){
   Vector2 c =*(bbox->centre) + Vector2(0.0f,-2.0f);
@@ -141,6 +159,10 @@ void SFAsset::GoNorth() {
   bbox->centre.reset();
   bbox->centre = make_shared<Vector2>(c);
 }
+else
+{
+	SetNotAlive();
+}
 }
 
 bool SFAsset::CollidesWith(shared_ptr<SFAsset> other) {
@@ -159,7 +181,7 @@ bool SFAsset::IsAlive() {
   return (SFASSET_DEAD != type);
 }
 
-void SFAsset::HandleCollision() {
+int SFAsset::HandleCollision() {
   if(SFASSET_PROJECTILE == type) {
     SetNotAlive();
   }
@@ -169,6 +191,8 @@ if(SFASSET_COIN==type ){
  auto pos= Point2 (rand()%600+32, rand()%400+600);
  this->SetPosition(pos);
 }
+
+
 }
 
 

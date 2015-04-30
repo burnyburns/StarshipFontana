@@ -23,6 +23,7 @@ public:
   virtual ~SFApp();
   void    OnEvent(SFEvent &);
   int     OnExecute();
+  void    GameOver();
   void    OnUpdateWorld();
   void    OnRender();
 
