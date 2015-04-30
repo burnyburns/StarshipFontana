@@ -21,7 +21,7 @@ $ g++ -c -std=c++11 src/*.cpp
 $ g++ -o StarshipFontana *.o -lSDL2 -lSDL2_image
 ```
 
-which will produce an executable file called "starship" in the
+which will produce an executable file called "StarshipFontana" in the
 top-level directory.  To execute this file do the following
 
 `$ ./StarshipFontana`
