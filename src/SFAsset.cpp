@@ -126,14 +126,17 @@ void SFAsset::GoSouth() {
   bbox->centre = make_shared<Vector2>(c);
   
   if(SFASSET_ALIEN == type){
+	  int w, h;
+	  SDL_GetRendererOutputSize(sf_window->getRenderer(), &w, &h);
   Vector2 c =*(bbox->centre) + Vector2(0.0f,-2.0f);
-  if(!(c.getY() < 0.0f)){
+  if(!(c.getY() < 50.0f)){
 	bbox->centre.reset();
 	bbox->centre = make_shared<Vector2>(c);
 			}
 	else{
 	auto pos = Point2(rand()%600+32, rand()%400+600);
 	this->SetPosition(pos);
+	this->SetHP(60);
 	}
 	}
 }
@@ -181,10 +184,38 @@ bool SFAsset::IsAlive() {
   return (SFASSET_DEAD != type);
 }
 
+
+
+int SFAsset::Points(){
+	return pPoints;}
+	
+void SFAsset::SetPoints(int amount){
+this->pPoints = amount;
+cout<<"Score "<<amount<<endl;
+}
+	
+
+
 int SFAsset::HandleCollision() {
   if(SFASSET_PROJECTILE == type) {
     SetNotAlive();
   }
+	if(SFASSET_ALIEN==type){
+	if(this->HP()<=0){
+	int canvas_w, canvas_h;
+	SDL_GetRendererOutputSize(sf_window->getRenderer(),&canvas_w,&canvas_h);
+    auto pos= Point2 (rand()%600+32, rand()%400+600);
+    this->SetPosition(pos);
+}
+else{
+	int health = this->HP()-30;
+	this->SetHP(health);
+	cout<<"The enemy has "<<this->HP()<<" remaining"<<endl;
+}
+	  
+  
+  
+  
 if(SFASSET_COIN==type ){
  int canvas_w, canvas_h;
  SDL_GetRendererOutputSize(sf_window->getRenderer(),&canvas_w,&canvas_h);
@@ -194,6 +225,6 @@ if(SFASSET_COIN==type ){
 
 
 }
-
+}
 
  

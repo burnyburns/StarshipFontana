@@ -17,8 +17,8 @@ SFApp::SFApp(std::shared_ptr<SFWindow> window) : fire(0), is_running(true), sf_w
     // place an alien at width/number_of_aliens * i
     auto alien = make_shared<SFAsset>(SFASSET_ALIEN, sf_window);
     auto pos   = Point2(rand()%600+32, rand()%400+600);
-    alien->SetHP(60);
     alien->SetPosition(pos);
+    alien->SetHP(60);
     aliens.push_back(alien);
   }
 
@@ -88,7 +88,8 @@ void SFApp::OnUpdateWorld() {
     c->GoSouth();
     if (player->CollidesWith(c)){
 	c->HandleCollision();
-	cout<<"You've aquired a coin!"<<endl;}
+	cout<<"You've aquired a coin!"<<endl;
+	player->SetPoints(player->Points() +20);}
   }
 
   // Update enemy positions
@@ -96,10 +97,11 @@ void SFApp::OnUpdateWorld() {
     a->GoSouth();
     if(player-> CollidesWith(a)){
 	   player->SetHP(player->HP()-30);
+	  
 	  cout<<player->HP()<<" HP Remaining!"<<endl;
 	  
 	  	if(player->HP()<=0){
-	cout<<"Game Over!"<<endl;
+	cout<<"Game Over!"<<"  Your max score was "<<player->Points()<<endl;
 	is_running=false;
 }
   }
@@ -136,8 +138,20 @@ void SFApp::OnUpdateWorld() {
   }
   projectiles.clear();
   projectiles = list<shared_ptr<SFAsset>>(p_remove);
-}
+  
+	  
+  
+  list<shared_ptr<SFAsset>> coin_remove;
+  for(auto c : coins) {
+    if(c->IsAlive()) {
+      coin_remove.push_back(c);
+    }
+  }
+  coins.clear();
+  coins = list<shared_ptr<SFAsset>>(coin_remove);
 
+  
+}
 
 
 

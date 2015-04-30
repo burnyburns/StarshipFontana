@@ -33,6 +33,8 @@ public:
   virtual Point2    GetPosition();
   virtual SFAssetId GetId();
   virtual int		HP();
+  virtual int		Points();
+  virtual void		SetPoints(int amount);
   virtual void		SetHP(int amount);
   virtual void      OnRender();
   virtual void      GoEast();
@@ -50,6 +52,7 @@ private:
   // but, because we need to call SDL_FreeSurface on it, we can't.
   // (or we could use a std::shared_ptr with a custom Deleter, but
   // that's a little too much right now)
+  int						  pPoints;
   int 						  objHP;
   SDL_Texture               * sprite;
   shared_ptr<SFBoundingBox>   bbox;
